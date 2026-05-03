@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react';
 import CryptoCard from '../components/CryptoCard';
-import Chart from '../components/Chart';
 import CryptoDetailModal from '../components/CryptoDetailModal';
 import { getAllCryptos, updatePrices } from '../lib/cryptoData';
 import { generateSignal } from '../lib/technicalAnalysis';
-import { generateHistoricalData } from '../lib/prediction';
+import { generateHistoricalData } from '../lib/predictionImproved';
 
 export default function Dashboard() {
   const [cryptos, setCryptos] = useState([]);
   const [filter, setFilter] = useState('all');
-  const [chartData, setChartData] = useState([]);
   const [selectedCrypto, setSelectedCrypto] = useState(null);
   const [loading, setLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(new Date());
@@ -21,12 +19,6 @@ export default function Dashboard() {
   const loadCryptos = () => {
     const allCryptos = getAllCryptos();
     setCryptos(allCryptos);
-    
-    const data = allCryptos.slice(0, 8).map((c) => ({
-      name: c.symbol.replace('USDT', ''),
-      value: c.price
-    }));
-    setChartData(data);
     setLastUpdate(new Date());
   };
 
@@ -117,16 +109,6 @@ export default function Dashboard() {
           </p>
         </div>
       </header>
-
-      {/* Chart Section */}
-      {chartData.length > 0 && (
-        <section className="max-w-7xl mx-auto px-6 py-8">
-          <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg p-6 border border-gray-700">
-            <h2 className="text-xl font-bold mb-6 text-green-400">Vista General de Precios</h2>
-            <Chart data={chartData} type="line" />
-          </div>
-        </section>
-      )}
 
       {/* Filtros */}
       <div className="border-b border-gray-800 bg-black/50">
