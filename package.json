@@ -1,0 +1,12 @@
+{
+  "name": "cryptoca16",
+  "version": "1.0.0",
+  "description": "Crypto Analysis Algorithm",
+  "main": "index.js",
+  "scripts": {
+    "start": "node scripts/fetch-crypto-data.js"
+  },
+  "keywords": ["crypto", "analysis"],
+  "author": "",
+  "license": "MIT"
+}
