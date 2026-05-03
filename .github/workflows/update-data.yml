@@ -1,0 +1,36 @@
+name: CRYPTOCA16 Update Data
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Fetch crypto data
+        run: node scripts/fetch-crypto-data.js
+        env:
+          ADMIN_TOKEN: ${{ secrets.ADMIN_TOKEN }}
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A
+          git commit -m "Auto: Update crypto data [skip ci]" || echo "No changes to commit"
+          git push origin main
