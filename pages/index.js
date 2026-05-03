@@ -3,7 +3,8 @@ import CryptoCard from '../components/CryptoCard';
 import Chart from '../components/Chart';
 import CryptoDetailModal from '../components/CryptoDetailModal';
 import { getAllCryptos, updatePrices } from '../lib/cryptoData';
-import { generateSignal, generateHistoricalData, rankInvestments } from '../lib/prediction';
+import { generateSignal } from '../lib/technicalAnalysis';
+import { generateHistoricalData } from '../lib/prediction';
 
 export default function Dashboard() {
   const [cryptos, setCryptos] = useState([]);
@@ -47,8 +48,8 @@ export default function Dashboard() {
   });
 
   const stats = {
-    avgPrice: (cryptos.reduce((a, b) => a + b.price, 0) / cryptos.length).toFixed(2),
-    avgChange: (cryptos.reduce((a, b) => a + b.change24h, 0) / cryptos.length).toFixed(2),
+    avgPrice: cryptos.length > 0 ? (cryptos.reduce((a, b) => a + b.price, 0) / cryptos.length).toFixed(2) : '0',
+    avgChange: cryptos.length > 0 ? (cryptos.reduce((a, b) => a + b.change24h, 0) / cryptos.length).toFixed(2) : '0',
     totalVolume: cryptos.reduce((a, b) => a + b.volume, 0),
     buySignals: cryptosWithSignals.filter(c => c.signal && c.signal.includes('BUY')).length,
     sellSignals: cryptosWithSignals.filter(c => c.signal && c.signal.includes('SELL')).length,
@@ -118,12 +119,14 @@ export default function Dashboard() {
       </header>
 
       {/* Chart Section */}
-      <section className="max-w-7xl mx-auto px-6 py-8">
-        <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg p-6 border border-gray-700">
-          <h2 className="text-xl font-bold mb-6 text-green-400">Vista General de Precios</h2>
-          <Chart data={chartData} type="line" />
-        </div>
-      </section>
+      {chartData.length > 0 && (
+        <section className="max-w-7xl mx-auto px-6 py-8">
+          <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg p-6 border border-gray-700">
+            <h2 className="text-xl font-bold mb-6 text-green-400">Vista General de Precios</h2>
+            <Chart data={chartData} type="line" />
+          </div>
+        </section>
+      )}
 
       {/* Filtros */}
       <div className="border-b border-gray-800 bg-black/50">
