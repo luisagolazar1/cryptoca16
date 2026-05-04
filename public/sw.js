@@ -1,14 +1,20 @@
+// Service Worker para CRYPTOCA16 PWA
 const CACHE_NAME = 'cryptoca16-v2.0.0';
-const urlsToCache = [
+const STATIC_ASSETS = [
   '/',
+  '/index.html',
 ];
 
-// Install
+console.log('[SW] Service Worker iniciado');
+
+// Install Event
 self.addEventListener('install', (event) => {
+  console.log('[SW] Install event');
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(urlsToCache).catch(() => {
-        // Si falla, continuar de todas formas
+      console.log('[SW] Cache abierto:', CACHE_NAME);
+      return cache.addAll(STATIC_ASSETS).catch((err) => {
+        console.log('[SW] Error en addAll (esperado):', err.message);
         return Promise.resolve();
       });
     })
@@ -16,13 +22,15 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
-// Activate
+// Activate Event
 self.addEventListener('activate', (event) => {
+  console.log('[SW] Activate event');
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
           if (cacheName !== CACHE_NAME) {
+            console.log('[SW] Deletando cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
@@ -32,17 +40,19 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Fetch - Network first, fallback to cache
+// Fetch Event
 self.addEventListener('fetch', (event) => {
   // No cachear APIs externas
   if (
     event.request.url.includes('api.binance.com') ||
     event.request.url.includes('stream.binance.com') ||
-    event.request.url.includes('fonts.googleapis.com')
+    event.request.url.includes('fonts.googleapis.com') ||
+    event.request.url.includes('fonts.gstatic.com')
   ) {
     return;
   }
 
+  // Network first strategy
   event.respondWith(
     fetch(event.request)
       .then((response) => {
@@ -51,7 +61,6 @@ self.addEventListener('fetch', (event) => {
         }
 
         const responseToCache = response.clone();
-
         caches.open(CACHE_NAME).then((cache) => {
           cache.put(event.request, responseToCache);
         });
@@ -62,11 +71,11 @@ self.addEventListener('fetch', (event) => {
         return caches.match(event.request).then((response) => {
           return (
             response ||
-            new Response('Offline - No data available', {
+            new Response('Offline - No hay datos disponibles', {
               status: 503,
               statusText: 'Service Unavailable',
               headers: new Headers({
-                'Content-Type': 'text/plain',
+                'Content-Type': 'text/plain; charset=utf-8',
               }),
             })
           );
@@ -74,3 +83,5 @@ self.addEventListener('fetch', (event) => {
       })
   );
 });
+
+console.log('[SW] Service Worker registrado correctamente');

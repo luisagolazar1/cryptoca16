@@ -2,11 +2,11 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  optimizeFonts: true,
   
-  // Configuración de headers para PWA
+  // Headers para PWA
   async headers() {
     return [
+      // manifest.json - CRÍTICO
       {
         source: '/manifest.json',
         headers: [
@@ -18,8 +18,13 @@ const nextConfig = {
             key: 'Cache-Control',
             value: 'public, max-age=0, must-revalidate',
           },
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*',
+          },
         ],
       },
+      // Service Worker
       {
         source: '/sw.js',
         headers: [
@@ -37,6 +42,31 @@ const nextConfig = {
           },
         ],
       },
+      // Assets
+      {
+        source: '/icon-:size(192|512).png',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+          {
+            key: 'Content-Type',
+            value: 'image/png',
+          },
+        ],
+      },
+      // Todos los archivos HTML
+      {
+        source: '/:path(.*).html',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=0, must-revalidate',
+          },
+        ],
+      },
+      // Default headers
       {
         source: '/:path(.*)',
         headers: [
@@ -56,12 +86,16 @@ const nextConfig = {
             key: 'Referrer-Policy',
             value: 'strict-origin-when-cross-origin',
           },
+          {
+            key: 'Permissions-Policy',
+            value: 'geolocation=(), camera=(), microphone=()',
+          },
         ],
       },
     ];
   },
 
-  webpack: (config, { isServer }) => {
+  webpack: (config) => {
     return config;
   },
 
@@ -71,7 +105,6 @@ const nextConfig = {
   },
 
   images: {
-    domains: [],
     formats: ['image/avif', 'image/webp'],
   },
 };
