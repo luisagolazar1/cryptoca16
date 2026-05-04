@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import CryptoCard from '../components/CryptoCard';
 import CryptoDetailModal from '../components/CryptoDetailModal';
 import { getAllCryptos, updatePrices } from '../lib/cryptoData';
-import { generateSignal } from '../lib/technicalAnalysis';
-import { generateHistoricalData } from '../lib/predictionImproved';
 
 export default function Dashboard() {
   const [cryptos, setCryptos] = useState([]);
@@ -13,44 +11,51 @@ export default function Dashboard() {
   const [lastUpdate, setLastUpdate] = useState(new Date());
 
   useEffect(() => {
-    loadCryptos();
+    try {
+      const allCryptos = getAllCryptos();
+      setCryptos(allCryptos);
+      setLastUpdate(new Date());
+    } catch (error) {
+      console.error('Error loading cryptos:', error);
+    }
   }, []);
-
-  const loadCryptos = () => {
-    const allCryptos = getAllCryptos();
-    setCryptos(allCryptos);
-    setLastUpdate(new Date());
-  };
 
   const handleRefresh = () => {
     setLoading(true);
     setTimeout(() => {
-      const updated = updatePrices(cryptos);
-      setCryptos(updated);
-      setLastUpdate(new Date());
-      setLoading(false);
+      try {
+        const updated = updatePrices(cryptos);
+        setCryptos(updated);
+        setLastUpdate(new Date());
+      } catch (error) {
+        console.error('Error refreshing:', error);
+      } finally {
+        setLoading(false);
+      }
     }, 1000);
   };
 
-  // Generar señales para todos
+  // Generar señales simples
   const cryptosWithSignals = cryptos.map(crypto => {
-    const historicalData = generateHistoricalData(crypto, 90);
-    const signal = generateSignal(crypto, historicalData);
-    return { ...crypto, signal: signal.signal };
+    // Señal basada en precio y cambio
+    let signal = 'HOLD';
+    if (crypto.change24h > 3) signal = 'BUY';
+    else if (crypto.change24h < -3) signal = 'SELL';
+    
+    return { ...crypto, signal };
   });
 
   const stats = {
     avgPrice: cryptos.length > 0 ? (cryptos.reduce((a, b) => a + b.price, 0) / cryptos.length).toFixed(2) : '0',
     avgChange: cryptos.length > 0 ? (cryptos.reduce((a, b) => a + b.change24h, 0) / cryptos.length).toFixed(2) : '0',
-    totalVolume: cryptos.reduce((a, b) => a + b.volume, 0),
-    buySignals: cryptosWithSignals.filter(c => c.signal && c.signal.includes('BUY')).length,
-    sellSignals: cryptosWithSignals.filter(c => c.signal && c.signal.includes('SELL')).length,
+    buySignals: cryptosWithSignals.filter(c => c.signal === 'BUY').length,
+    sellSignals: cryptosWithSignals.filter(c => c.signal === 'SELL').length,
     holdSignals: cryptosWithSignals.filter(c => c.signal === 'HOLD').length,
   };
 
   let displayCryptos = cryptosWithSignals;
-  if (filter === 'buy') displayCryptos = cryptosWithSignals.filter(c => c.signal && c.signal.includes('BUY'));
-  else if (filter === 'sell') displayCryptos = cryptosWithSignals.filter(c => c.signal && c.signal.includes('SELL'));
+  if (filter === 'buy') displayCryptos = cryptosWithSignals.filter(c => c.signal === 'BUY');
+  else if (filter === 'sell') displayCryptos = cryptosWithSignals.filter(c => c.signal === 'SELL');
   else if (filter === 'hold') displayCryptos = cryptosWithSignals.filter(c => c.signal === 'HOLD');
 
   return (
@@ -74,7 +79,7 @@ export default function Dashboard() {
                   : 'bg-gradient-to-r from-green-600 to-green-500 text-white hover:shadow-lg hover:shadow-green-500/50'
               }`}
             >
-              {loading ? '🔄 Actualizando...' : '🔄 Actualizar Precios'}
+              {loading ? '🔄 Actualizando...' : '🔄 Actualizar'}
             </button>
           </div>
 
@@ -85,27 +90,27 @@ export default function Dashboard() {
               <p className="text-2xl font-bold text-green-400">${stats.avgPrice}</p>
             </div>
             <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg p-4 border border-gray-700">
-              <p className="text-xs text-gray-400 mb-1">📈 Cambio Promedio</p>
+              <p className="text-xs text-gray-400 mb-1">📈 Cambio</p>
               <p className={`text-2xl font-bold ${stats.avgChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                 {stats.avgChange >= 0 ? '+' : ''}{stats.avgChange}%
               </p>
             </div>
             <div className="bg-gradient-to-br from-green-800/30 to-gray-900 rounded-lg p-4 border border-green-700">
-              <p className="text-xs text-gray-400 mb-1">🚀 Señales Compra</p>
+              <p className="text-xs text-gray-400 mb-1">🚀 Compra</p>
               <p className="text-2xl font-bold text-green-400">{stats.buySignals}</p>
             </div>
             <div className="bg-gradient-to-br from-red-800/30 to-gray-900 rounded-lg p-4 border border-red-700">
-              <p className="text-xs text-gray-400 mb-1">📉 Señales Venta</p>
+              <p className="text-xs text-gray-400 mb-1">📉 Venta</p>
               <p className="text-2xl font-bold text-red-400">{stats.sellSignals}</p>
             </div>
             <div className="bg-gradient-to-br from-yellow-800/30 to-gray-900 rounded-lg p-4 border border-yellow-700">
-              <p className="text-xs text-gray-400 mb-1">⏸️ Mantener</p>
+              <p className="text-xs text-gray-400 mb-1">⏸️ Hold</p>
               <p className="text-2xl font-bold text-yellow-400">{stats.holdSignals}</p>
             </div>
           </div>
 
           <p className="text-xs text-gray-500 mt-4">
-            Última actualización: {lastUpdate.toLocaleTimeString('es-AR')}
+            Actualizado: {lastUpdate.toLocaleTimeString('es-AR')}
           </p>
         </div>
       </header>
@@ -125,10 +130,10 @@ export default function Dashboard() {
                 onClick={() => setFilter(f.key)}
                 className={`px-6 py-2 rounded-lg whitespace-nowrap transition-all font-semibold ${
                   filter === f.key
-                    ? f.color === 'green' ? 'bg-gradient-to-r from-green-600 to-green-500 text-white shadow-lg shadow-green-500/50' :
-                      f.color === 'yellow' ? 'bg-gradient-to-r from-yellow-600 to-yellow-500 text-white shadow-lg shadow-yellow-500/50' :
-                      f.color === 'red' ? 'bg-gradient-to-r from-red-600 to-red-500 text-white shadow-lg shadow-red-500/50' :
-                      'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/50'
+                    ? f.color === 'green' ? 'bg-gradient-to-r from-green-600 to-green-500 text-white' :
+                      f.color === 'yellow' ? 'bg-gradient-to-r from-yellow-600 to-yellow-500 text-white' :
+                      f.color === 'red' ? 'bg-gradient-to-r from-red-600 to-red-500 text-white' :
+                      'bg-gradient-to-r from-blue-600 to-blue-500 text-white'
                     : 'bg-gray-800 text-gray-400 hover:bg-gray-700 border border-gray-700'
                 }`}
               >
@@ -151,7 +156,11 @@ export default function Dashboard() {
         {/* Grid de Criptos */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {displayCryptos.map(crypto => (
-            <div key={crypto.symbol} onClick={() => setSelectedCrypto(crypto)} className="cursor-pointer">
+            <div 
+              key={crypto.symbol} 
+              onClick={() => setSelectedCrypto(crypto)} 
+              className="cursor-pointer"
+            >
               <CryptoCard crypto={crypto} signal={crypto.signal} />
             </div>
           ))}
