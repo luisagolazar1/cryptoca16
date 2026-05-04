@@ -9,9 +9,6 @@ export default function CryptoDetailModal({ crypto, onClose }) {
     if (!crypto) return;
 
     try {
-      // Generar análisis básico
-      const prices = Array.from({ length: 90 }, () => crypto.price * (0.9 + Math.random() * 0.2));
-      
       const fibonacci = {
         level_0: crypto.price,
         level_236: crypto.price * 0.764,
@@ -59,30 +56,36 @@ export default function CryptoDetailModal({ crypto, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur z-50 flex items-center justify-center p-4" onClick={onClose}>
+    <div 
+      className="fixed inset-0 bg-black/80 backdrop-blur z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto safe-area-inset"
+      onClick={onClose}
+    >
       <div 
-        className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl max-w-5xl w-full max-h-[95vh] overflow-y-auto border border-gray-700" 
+        className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl w-full max-w-3xl border border-gray-700 shadow-2xl my-4 sm:my-6 max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
-        <div className="sticky top-0 bg-gray-900/95 backdrop-blur border-b border-gray-700 p-6 flex justify-between items-start z-10">
-          <div>
-            <h2 className="text-3xl font-bold text-white mb-1">{crypto.name}</h2>
-            <p className="text-gray-400">{crypto.symbol} - ${crypto.price.toFixed(6)}</p>
+        {/* Header - Sticky */}
+        <div className="sticky top-0 bg-gray-900/98 backdrop-blur border-b border-gray-700 px-4 sm:px-6 py-4 sm:py-5 flex justify-between items-start gap-4 z-20">
+          <div className="flex-1 min-w-0">
+            <h2 className="text-xl sm:text-2xl font-bold text-white truncate">{crypto.name}</h2>
+            <p className="text-xs sm:text-sm text-gray-400 truncate">{crypto.symbol} - ${crypto.price.toFixed(6)}</p>
           </div>
           <button 
             onClick={onClose} 
-            className="text-gray-400 hover:text-white text-3xl leading-none"
+            className="text-gray-400 hover:text-white text-2xl sm:text-3xl leading-none flex-shrink-0 w-8 h-8 flex items-center justify-center hover:bg-gray-800 rounded-lg transition-colors"
           >
             ✕
           </button>
         </div>
 
-        {/* Content */}
-        <div className="p-8">
+        {/* Content - Scrollable */}
+        <div className="px-4 sm:px-6 py-6 sm:py-8">
           {loading ? (
-            <div className="text-center text-gray-400 py-8">
-              <p>Cargando análisis...</p>
+            <div className="text-center text-gray-400 py-12 sm:py-16">
+              <p className="text-sm sm:text-base">Cargando análisis...</p>
+              <div className="mt-4 flex justify-center">
+                <div className="animate-spin rounded-full h-8 w-8 border border-gray-700 border-t-green-500"></div>
+              </div>
             </div>
           ) : analyses ? (
             <ComprehensiveAnalysis 
@@ -91,8 +94,8 @@ export default function CryptoDetailModal({ crypto, onClose }) {
               backtestData={backtestData}
             />
           ) : (
-            <div className="text-center text-red-400 py-8">
-              <p>Error al cargar el análisis</p>
+            <div className="text-center text-red-400 py-12 sm:py-16">
+              <p className="text-sm sm:text-base">Error al cargar el análisis</p>
             </div>
           )}
         </div>
