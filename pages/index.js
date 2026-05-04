@@ -9,6 +9,7 @@ export default function Dashboard() {
   const [selectedCrypto, setSelectedCrypto] = useState(null);
   const [loading, setLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(new Date());
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     try {
@@ -18,6 +19,14 @@ export default function Dashboard() {
     } catch (error) {
       console.error('Error loading cryptos:', error);
     }
+
+    // Detectar scroll
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleRefresh = () => {
@@ -37,7 +46,6 @@ export default function Dashboard() {
 
   // Generar señales simples
   const cryptosWithSignals = cryptos.map(crypto => {
-    // Señal basada en precio y cambio
     let signal = 'HOLD';
     if (crypto.change24h > 3) signal = 'BUY';
     else if (crypto.change24h < -3) signal = 'SELL';
@@ -60,63 +68,67 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black text-white">
-      {/* Header */}
-      <header className="border-b border-gray-800 bg-black/50 backdrop-blur sticky top-0 z-20">
-        <div className="max-w-7xl mx-auto px-6 py-8">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-5xl font-bold bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent mb-2">
-                CRYPTOCA16
-              </h1>
-              <p className="text-gray-400">Sistema Avanzado de Análisis de Criptomonedas</p>
+      {/* Header - Compacto cuando scrollea */}
+      <header className={`border-b border-gray-800 bg-black/50 backdrop-blur sticky top-0 z-40 transition-all duration-300 ${isScrolled ? 'py-3' : 'py-8'}`}>
+        <div className="max-w-7xl mx-auto px-6">
+          {!isScrolled && (
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h1 className="text-5xl font-bold bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent mb-2">
+                  CRYPTOCA16
+                </h1>
+                <p className="text-gray-400">Sistema Avanzado de Análisis de Criptomonedas</p>
+              </div>
+              <button
+                onClick={handleRefresh}
+                disabled={loading}
+                className={`px-6 py-3 rounded-lg font-bold transition-all ${
+                  loading 
+                    ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-green-600 to-green-500 text-white hover:shadow-lg hover:shadow-green-500/50'
+                }`}
+              >
+                {loading ? '🔄 Actualizando...' : '🔄 Actualizar'}
+              </button>
             </div>
-            <button
-              onClick={handleRefresh}
-              disabled={loading}
-              className={`px-6 py-3 rounded-lg font-bold transition-all ${
-                loading 
-                  ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
-                  : 'bg-gradient-to-r from-green-600 to-green-500 text-white hover:shadow-lg hover:shadow-green-500/50'
-              }`}
-            >
-              {loading ? '🔄 Actualizando...' : '🔄 Actualizar'}
-            </button>
-          </div>
+          )}
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          <div className={`grid gap-4 transition-all ${isScrolled ? 'grid-cols-2 md:grid-cols-5 text-sm' : 'grid-cols-2 md:grid-cols-5'}`}>
             <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg p-4 border border-gray-700">
-              <p className="text-xs text-gray-400 mb-1">📊 Precio Promedio</p>
-              <p className="text-2xl font-bold text-green-400">${stats.avgPrice}</p>
+              <p className={`text-gray-400 mb-1 ${isScrolled ? 'text-xs' : 'text-xs'}`}>📊 Precio</p>
+              <p className={`font-bold text-green-400 ${isScrolled ? 'text-lg' : 'text-2xl'}`}>${stats.avgPrice}</p>
             </div>
             <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg p-4 border border-gray-700">
-              <p className="text-xs text-gray-400 mb-1">📈 Cambio</p>
-              <p className={`text-2xl font-bold ${stats.avgChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+              <p className={`text-gray-400 mb-1 ${isScrolled ? 'text-xs' : 'text-xs'}`}>📈 Cambio</p>
+              <p className={`font-bold ${stats.avgChange >= 0 ? 'text-green-400' : 'text-red-400'} ${isScrolled ? 'text-lg' : 'text-2xl'}`}>
                 {stats.avgChange >= 0 ? '+' : ''}{stats.avgChange}%
               </p>
             </div>
             <div className="bg-gradient-to-br from-green-800/30 to-gray-900 rounded-lg p-4 border border-green-700">
-              <p className="text-xs text-gray-400 mb-1">🚀 Compra</p>
-              <p className="text-2xl font-bold text-green-400">{stats.buySignals}</p>
+              <p className={`text-gray-400 mb-1 ${isScrolled ? 'text-xs' : 'text-xs'}`}>🚀 Compra</p>
+              <p className={`font-bold text-green-400 ${isScrolled ? 'text-lg' : 'text-2xl'}`}>{stats.buySignals}</p>
             </div>
             <div className="bg-gradient-to-br from-red-800/30 to-gray-900 rounded-lg p-4 border border-red-700">
-              <p className="text-xs text-gray-400 mb-1">📉 Venta</p>
-              <p className="text-2xl font-bold text-red-400">{stats.sellSignals}</p>
+              <p className={`text-gray-400 mb-1 ${isScrolled ? 'text-xs' : 'text-xs'}`}>📉 Venta</p>
+              <p className={`font-bold text-red-400 ${isScrolled ? 'text-lg' : 'text-2xl'}`}>{stats.sellSignals}</p>
             </div>
             <div className="bg-gradient-to-br from-yellow-800/30 to-gray-900 rounded-lg p-4 border border-yellow-700">
-              <p className="text-xs text-gray-400 mb-1">⏸️ Hold</p>
-              <p className="text-2xl font-bold text-yellow-400">{stats.holdSignals}</p>
+              <p className={`text-gray-400 mb-1 ${isScrolled ? 'text-xs' : 'text-xs'}`}>⏸️ Hold</p>
+              <p className={`font-bold text-yellow-400 ${isScrolled ? 'text-lg' : 'text-2xl'}`}>{stats.holdSignals}</p>
             </div>
           </div>
 
-          <p className="text-xs text-gray-500 mt-4">
-            Actualizado: {lastUpdate.toLocaleTimeString('es-AR')}
-          </p>
+          {!isScrolled && (
+            <p className="text-xs text-gray-500 mt-4">
+              Actualizado: {lastUpdate.toLocaleTimeString('es-AR')}
+            </p>
+          )}
         </div>
       </header>
 
       {/* Filtros */}
-      <div className="border-b border-gray-800 bg-black/50">
+      <div className="border-b border-gray-800 bg-black/50 sticky top-[var(--header-height,120px)] z-30">
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex gap-3 overflow-x-auto pb-2">
             {[
