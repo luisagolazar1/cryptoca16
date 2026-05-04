@@ -4,7 +4,7 @@ const nextConfig = {
   swcMinify: true,
   optimizeFonts: true,
   
-  // Configuración de headers
+  // Configuración de headers para PWA
   async headers() {
     return [
       {
@@ -12,17 +12,21 @@ const nextConfig = {
         headers: [
           {
             key: 'Content-Type',
-            value: 'application/manifest+json',
+            value: 'application/manifest+json; charset=utf-8',
           },
           {
             key: 'Cache-Control',
-            value: 'public, max-age=3600, must-revalidate',
+            value: 'public, max-age=0, must-revalidate',
           },
         ],
       },
       {
         source: '/sw.js',
         headers: [
+          {
+            key: 'Content-Type',
+            value: 'application/javascript; charset=utf-8',
+          },
           {
             key: 'Cache-Control',
             value: 'public, max-age=0, must-revalidate',
@@ -42,7 +46,7 @@ const nextConfig = {
           },
           {
             key: 'X-Frame-Options',
-            value: 'DENY',
+            value: 'SAMEORIGIN',
           },
           {
             key: 'X-XSS-Protection',
@@ -57,35 +61,18 @@ const nextConfig = {
     ];
   },
 
-  // Configuración de rewrites para PWA
-  async rewrites() {
-    return {
-      beforeFiles: [],
-      afterFiles: [],
-      fallback: [],
-    };
-  },
-
-  // Webpack config
   webpack: (config, { isServer }) => {
     return config;
   },
 
-  // Environment variables
   env: {
     NEXT_PUBLIC_APP_NAME: 'CRYPTOCA16',
     NEXT_PUBLIC_APP_VERSION: '2.0.0',
   },
 
-  // Imágenes optimizadas
   images: {
     domains: [],
     formats: ['image/avif', 'image/webp'],
-  },
-
-  // API routes
-  api: {
-    responseLimit: '8mb',
   },
 };
 
