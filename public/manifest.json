@@ -1,11 +1,13 @@
 {
   "name": "CRYPTOCA16",
   "short_name": "CRYPTOCA16",
+  "description": "Sistema de Análisis de Criptomonedas",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#000000",
-  "theme_color": "#000000",
-  "description": "Sistema Avanzado de Análisis de Criptomonedas",
+  "theme_color": "#10b981",
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/icon-192.png",
