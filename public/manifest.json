@@ -1,83 +1,23 @@
 {
-  "name": "CRYPTOCA16 - Análisis de Criptomonedas",
+  "name": "CRYPTOCA16",
   "short_name": "CRYPTOCA16",
-  "description": "Sistema Avanzado de Análisis y Predicción de Criptomonedas en Tiempo Real",
   "start_url": "/",
-  "scope": "/",
   "display": "standalone",
-  "orientation": "portrait-primary",
   "background_color": "#000000",
-  "theme_color": "#10b981",
-  "prefer_related_applications": false,
+  "theme_color": "#000000",
+  "description": "Sistema Avanzado de Análisis de Criptomonedas",
   "icons": [
     {
       "src": "/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
       "src": "/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
-      "src": "/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
-    }
-  ],
-  "categories": ["finance", "productivity"],
-  "screenshots": [
-    {
-      "src": "/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "form_factor": "narrow"
-    },
-    {
-      "src": "/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "form_factor": "wide"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "Dashboard",
-      "short_name": "Dashboard",
-      "description": "Ver dashboard de criptomonedas en tiempo real",
-      "url": "/?mode=dashboard",
-      "icons": [
-        {
-          "src": "/icon-192.png",
-          "sizes": "192x192",
-          "type": "image/png",
-          "purpose": "any"
-        }
-      ]
-    },
-    {
-      "name": "Análisis Avanzado",
-      "short_name": "Análisis",
-      "description": "Ver análisis técnico avanzado y predicciones",
-      "url": "/advanced?mode=analysis",
-      "icons": [
-        {
-          "src": "/icon-192.png",
-          "sizes": "192x192",
-          "type": "image/png",
-          "purpose": "any"
-        }
-      ]
+      "purpose": "any maskable"
     }
   ]
 }

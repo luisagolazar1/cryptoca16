@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Head from 'next/head';
 import CryptoCard from '../components/CryptoCard';
 import CryptoDetailModal from '../components/CryptoDetailModal';
 import { getAllCryptos, updatePrices } from '../lib/cryptoData';
@@ -8,190 +9,197 @@ export default function Dashboard() {
   const [filter, setFilter] = useState('all');
   const [selectedCrypto, setSelectedCrypto] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [lastUpdate, setLastUpdate] = useState(new Date());
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState(null);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     try {
-      const allCryptos = getAllCryptos();
-      setCryptos(allCryptos);
+      setCryptos(getAllCryptos());
       setLastUpdate(new Date());
-    } catch (error) {
-      console.error('Error loading cryptos:', error);
+    } catch (e) {
+      console.error(e);
     }
 
-    // Detectar scroll
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 80);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   const handleRefresh = () => {
     setLoading(true);
     setTimeout(() => {
       try {
-        const updated = updatePrices(cryptos);
-        setCryptos(updated);
+        setCryptos(prev => updatePrices(prev));
         setLastUpdate(new Date());
-      } catch (error) {
-        console.error('Error refreshing:', error);
+      } catch (e) {
+        console.error(e);
       } finally {
         setLoading(false);
       }
-    }, 1000);
+    }, 800);
   };
 
-  // Generar señales simples
-  const cryptosWithSignals = cryptos.map(crypto => {
-    let signal = 'HOLD';
-    if (crypto.change24h > 3) signal = 'BUY';
-    else if (crypto.change24h < -3) signal = 'SELL';
-    
-    return { ...crypto, signal };
-  });
+  const withSignals = cryptos.map(c => ({
+    ...c,
+    signal: c.change24h > 3 ? 'BUY' : c.change24h < -3 ? 'SELL' : 'HOLD',
+  }));
 
   const stats = {
-    avgPrice: cryptos.length > 0 ? (cryptos.reduce((a, b) => a + b.price, 0) / cryptos.length).toFixed(2) : '0',
-    avgChange: cryptos.length > 0 ? (cryptos.reduce((a, b) => a + b.change24h, 0) / cryptos.length).toFixed(2) : '0',
-    buySignals: cryptosWithSignals.filter(c => c.signal === 'BUY').length,
-    sellSignals: cryptosWithSignals.filter(c => c.signal === 'SELL').length,
-    holdSignals: cryptosWithSignals.filter(c => c.signal === 'HOLD').length,
+    avgPrice: cryptos.length ? (cryptos.reduce((a, b) => a + b.price, 0) / cryptos.length).toFixed(2) : '0',
+    avgChange: cryptos.length ? (cryptos.reduce((a, b) => a + b.change24h, 0) / cryptos.length).toFixed(2) : '0',
+    buy: withSignals.filter(c => c.signal === 'BUY').length,
+    sell: withSignals.filter(c => c.signal === 'SELL').length,
+    hold: withSignals.filter(c => c.signal === 'HOLD').length,
   };
 
-  let displayCryptos = cryptosWithSignals;
-  if (filter === 'buy') displayCryptos = cryptosWithSignals.filter(c => c.signal === 'BUY');
-  else if (filter === 'sell') displayCryptos = cryptosWithSignals.filter(c => c.signal === 'SELL');
-  else if (filter === 'hold') displayCryptos = cryptosWithSignals.filter(c => c.signal === 'HOLD');
+  const displayed = filter === 'buy' ? withSignals.filter(c => c.signal === 'BUY')
+    : filter === 'sell' ? withSignals.filter(c => c.signal === 'SELL')
+    : filter === 'hold' ? withSignals.filter(c => c.signal === 'HOLD')
+    : withSignals;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black text-white">
-      {/* Header - Compacto cuando scrollea */}
-      <header className={`border-b border-gray-800 bg-black/50 backdrop-blur sticky top-0 z-40 transition-all duration-300 ${isScrolled ? 'py-3' : 'py-8'}`}>
-        <div className="max-w-7xl mx-auto px-6">
-          {!isScrolled && (
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h1 className="text-5xl font-bold bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent mb-2">
+    <>
+      <Head>
+        <title>CRYPTOCA16</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <meta name="theme-color" content="#000000" />
+      </Head>
+
+      <div className="min-h-screen bg-black text-white">
+
+        {/* ======= HEADER STICKY COMPRIMIBLE ======= */}
+        <header
+          className="sticky top-0 z-50 bg-black border-b border-gray-800 transition-all duration-300"
+          style={{ paddingTop: scrolled ? '6px' : '20px', paddingBottom: scrolled ? '6px' : '16px' }}
+        >
+          <div className="px-4 max-w-2xl mx-auto">
+
+            {/* MODO EXPANDIDO (arriba de página) */}
+            {!scrolled && (
+              <>
+                {/* Título + Botón */}
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <h1 className="text-4xl font-black bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent leading-none">
+                      CRYPTOCA16
+                    </h1>
+                    <p className="text-gray-500 text-xs mt-1">Sistema Avanzado de Análisis</p>
+                  </div>
+                  <button
+                    onClick={handleRefresh}
+                    disabled={loading}
+                    className="px-4 py-2 rounded-xl font-bold text-sm bg-green-600 hover:bg-green-500 active:bg-green-700 text-white transition-all disabled:opacity-50"
+                  >
+                    {loading ? '⏳' : '🔄'} Actualizar
+                  </button>
+                </div>
+
+                {/* Stats 2x2 + 1 */}
+                <div className="grid grid-cols-2 gap-2 mb-2">
+                  <div className="bg-gray-900 rounded-xl p-3 border border-gray-800">
+                    <p className="text-gray-500 text-xs mb-1">📊 Precio Prom.</p>
+                    <p className="text-xl font-bold text-green-400">${stats.avgPrice}</p>
+                  </div>
+                  <div className="bg-gray-900 rounded-xl p-3 border border-gray-800">
+                    <p className="text-gray-500 text-xs mb-1">📈 Cambio</p>
+                    <p className={`text-xl font-bold ${parseFloat(stats.avgChange) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                      {parseFloat(stats.avgChange) >= 0 ? '+' : ''}{stats.avgChange}%
+                    </p>
+                  </div>
+                  <div className="bg-green-900/40 rounded-xl p-3 border border-green-800/50">
+                    <p className="text-gray-500 text-xs mb-1">🚀 Compra</p>
+                    <p className="text-xl font-bold text-green-400">{stats.buy}</p>
+                  </div>
+                  <div className="bg-red-900/30 rounded-xl p-3 border border-red-800/50">
+                    <p className="text-gray-500 text-xs mb-1">📉 Venta</p>
+                    <p className="text-xl font-bold text-red-400">{stats.sell}</p>
+                  </div>
+                </div>
+                <div className="bg-yellow-900/20 rounded-xl p-3 border border-yellow-800/30 mb-2">
+                  <div className="flex justify-between items-center">
+                    <p className="text-gray-500 text-xs">⏸️ Hold</p>
+                    <p className="text-lg font-bold text-yellow-400">{stats.hold}</p>
+                  </div>
+                </div>
+
+                {lastUpdate && (
+                  <p className="text-gray-600 text-xs text-right">
+                    Actualizado: {lastUpdate.toLocaleTimeString('es-AR')}
+                  </p>
+                )}
+              </>
+            )}
+
+            {/* MODO COMPRIMIDO (al hacer scroll) */}
+            {scrolled && (
+              <div className="flex items-center justify-between gap-3">
+                <h1 className="text-lg font-black bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
                   CRYPTOCA16
                 </h1>
-                <p className="text-gray-400">Sistema Avanzado de Análisis de Criptomonedas</p>
+                <div className="flex gap-3 items-center text-xs font-bold">
+                  <span className="text-green-400">🚀 {stats.buy}</span>
+                  <span className="text-red-400">📉 {stats.sell}</span>
+                  <span className="text-yellow-400">⏸️ {stats.hold}</span>
+                  <button
+                    onClick={handleRefresh}
+                    disabled={loading}
+                    className="px-3 py-1.5 rounded-lg bg-green-700 text-white text-xs font-bold"
+                  >
+                    {loading ? '⏳' : '🔄'}
+                  </button>
+                </div>
               </div>
-              <button
-                onClick={handleRefresh}
-                disabled={loading}
-                className={`px-6 py-3 rounded-lg font-bold transition-all ${
-                  loading 
-                    ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
-                    : 'bg-gradient-to-r from-green-600 to-green-500 text-white hover:shadow-lg hover:shadow-green-500/50'
-                }`}
-              >
-                {loading ? '🔄 Actualizando...' : '🔄 Actualizar'}
-              </button>
-            </div>
-          )}
-
-          {/* Stats Grid */}
-          <div className={`grid gap-4 transition-all ${isScrolled ? 'grid-cols-2 md:grid-cols-5 text-sm' : 'grid-cols-2 md:grid-cols-5'}`}>
-            <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg p-4 border border-gray-700">
-              <p className={`text-gray-400 mb-1 ${isScrolled ? 'text-xs' : 'text-xs'}`}>📊 Precio</p>
-              <p className={`font-bold text-green-400 ${isScrolled ? 'text-lg' : 'text-2xl'}`}>${stats.avgPrice}</p>
-            </div>
-            <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg p-4 border border-gray-700">
-              <p className={`text-gray-400 mb-1 ${isScrolled ? 'text-xs' : 'text-xs'}`}>📈 Cambio</p>
-              <p className={`font-bold ${stats.avgChange >= 0 ? 'text-green-400' : 'text-red-400'} ${isScrolled ? 'text-lg' : 'text-2xl'}`}>
-                {stats.avgChange >= 0 ? '+' : ''}{stats.avgChange}%
-              </p>
-            </div>
-            <div className="bg-gradient-to-br from-green-800/30 to-gray-900 rounded-lg p-4 border border-green-700">
-              <p className={`text-gray-400 mb-1 ${isScrolled ? 'text-xs' : 'text-xs'}`}>🚀 Compra</p>
-              <p className={`font-bold text-green-400 ${isScrolled ? 'text-lg' : 'text-2xl'}`}>{stats.buySignals}</p>
-            </div>
-            <div className="bg-gradient-to-br from-red-800/30 to-gray-900 rounded-lg p-4 border border-red-700">
-              <p className={`text-gray-400 mb-1 ${isScrolled ? 'text-xs' : 'text-xs'}`}>📉 Venta</p>
-              <p className={`font-bold text-red-400 ${isScrolled ? 'text-lg' : 'text-2xl'}`}>{stats.sellSignals}</p>
-            </div>
-            <div className="bg-gradient-to-br from-yellow-800/30 to-gray-900 rounded-lg p-4 border border-yellow-700">
-              <p className={`text-gray-400 mb-1 ${isScrolled ? 'text-xs' : 'text-xs'}`}>⏸️ Hold</p>
-              <p className={`font-bold text-yellow-400 ${isScrolled ? 'text-lg' : 'text-2xl'}`}>{stats.holdSignals}</p>
-            </div>
+            )}
           </div>
+        </header>
 
-          {!isScrolled && (
-            <p className="text-xs text-gray-500 mt-4">
-              Actualizado: {lastUpdate.toLocaleTimeString('es-AR')}
-            </p>
-          )}
-        </div>
-      </header>
-
-      {/* Filtros */}
-      <div className="border-b border-gray-800 bg-black/50 sticky top-[var(--header-height,120px)] z-30">
-        <div className="max-w-7xl mx-auto px-6 py-6">
-          <div className="flex gap-3 overflow-x-auto pb-2">
+        {/* ======= FILTROS ======= */}
+        <div className="sticky top-[53px] z-40 bg-black border-b border-gray-800 px-4 py-2" style={{ top: scrolled ? '52px' : '260px' }}>
+          <div className="max-w-2xl mx-auto flex gap-2 overflow-x-auto pb-1">
             {[
-              { key: 'all', label: '📊 Todas', count: cryptos.length },
-              { key: 'buy', label: '🚀 Comprar', count: stats.buySignals, color: 'green' },
-              { key: 'hold', label: '⏸️ Mantener', count: stats.holdSignals, color: 'yellow' },
-              { key: 'sell', label: '📉 Vender', count: stats.sellSignals, color: 'red' },
+              { key: 'all', label: `📊 Todas (${cryptos.length})`, active: 'bg-blue-600' },
+              { key: 'buy', label: `🚀 Comprar (${stats.buy})`, active: 'bg-green-600' },
+              { key: 'hold', label: `⏸️ Hold (${stats.hold})`, active: 'bg-yellow-600' },
+              { key: 'sell', label: `📉 Vender (${stats.sell})`, active: 'bg-red-600' },
             ].map(f => (
               <button
                 key={f.key}
                 onClick={() => setFilter(f.key)}
-                className={`px-6 py-2 rounded-lg whitespace-nowrap transition-all font-semibold ${
-                  filter === f.key
-                    ? f.color === 'green' ? 'bg-gradient-to-r from-green-600 to-green-500 text-white' :
-                      f.color === 'yellow' ? 'bg-gradient-to-r from-yellow-600 to-yellow-500 text-white' :
-                      f.color === 'red' ? 'bg-gradient-to-r from-red-600 to-red-500 text-white' :
-                      'bg-gradient-to-r from-blue-600 to-blue-500 text-white'
-                    : 'bg-gray-800 text-gray-400 hover:bg-gray-700 border border-gray-700'
+                className={`px-4 py-2 rounded-lg whitespace-nowrap text-sm font-semibold flex-shrink-0 transition-all ${
+                  filter === f.key ? `${f.active} text-white` : 'bg-gray-800 text-gray-400'
                 }`}
               >
-                {f.label} ({f.count})
+                {f.label}
               </button>
             ))}
           </div>
         </div>
-      </div>
 
-      {/* Contenido Principal */}
-      <main className="max-w-7xl mx-auto px-6 py-8">
-        <h2 className="text-3xl font-bold mb-6">
-          {filter === 'all' ? '🌍 Todas las Criptomonedas' : 
-           filter === 'buy' ? '🚀 Señales de Compra' : 
-           filter === 'hold' ? '⏸️ Mantener Posición' :
-           '📉 Señales de Venta'}
-        </h2>
-
-        {/* Grid de Criptos */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {displayCryptos.map(crypto => (
-            <div 
-              key={crypto.symbol} 
-              onClick={() => setSelectedCrypto(crypto)} 
-              className="cursor-pointer"
-            >
-              <CryptoCard crypto={crypto} signal={crypto.signal} />
-            </div>
-          ))}
-        </div>
-
-        {displayCryptos.length === 0 && (
-          <div className="text-center py-12 text-gray-400">
-            <p className="text-xl">No hay criptomonedas en esta categoría</p>
+        {/* ======= LISTA DE CRIPTOS ======= */}
+        <main className="max-w-2xl mx-auto px-4 py-4">
+          <div className="grid grid-cols-1 gap-3">
+            {displayed.map(crypto => (
+              <div key={crypto.symbol} onClick={() => setSelectedCrypto(crypto)} className="cursor-pointer">
+                <CryptoCard crypto={crypto} signal={crypto.signal} />
+              </div>
+            ))}
           </div>
-        )}
-      </main>
 
-      {/* Modal de Detalle */}
-      {selectedCrypto && (
-        <CryptoDetailModal 
-          crypto={selectedCrypto} 
-          onClose={() => setSelectedCrypto(null)} 
-        />
-      )}
-    </div>
+          {displayed.length === 0 && (
+            <div className="text-center py-16 text-gray-500">
+              <p className="text-lg">Sin criptomonedas en esta categoría</p>
+            </div>
+          )}
+        </main>
+
+        {/* ======= MODAL ======= */}
+        {selectedCrypto && (
+          <CryptoDetailModal
+            crypto={selectedCrypto}
+            onClose={() => setSelectedCrypto(null)}
+          />
+        )}
+      </div>
+    </>
   );
 }
