@@ -194,7 +194,7 @@ export default function AdvancedPage() {
             <div className="bg-blue-900/20 border border-blue-700 rounded-lg p-4">
               <p className="text-blue-300 text-sm">
                 💡 <strong>Tip:</strong> Usa estos indicadores avanzados para confirmar señales de trading.
-                CCI > 100 = Sobreventa, MFI > 80 = Sobrecomprado
+                CCI &gt; 100 = Sobreventa, MFI &gt; 80 = Sobrecomprado
               </p>
             </div>
           </div>
