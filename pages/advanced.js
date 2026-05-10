@@ -142,7 +142,7 @@ export default function AdvancedPage() {
                 <div className="bg-gray-700/50 rounded-lg p-4">
                   <p className="text-gray-400 text-sm mb-1">CCI (Commodity Channel)</p>
                   <p className="text-2xl font-bold text-cyan-400">{indicators.cci.toFixed(2)}</p>
-                  <p className="text-xs text-gray-500 mt-2">Sobreventa: < -100</p>
+                  <p className="text-xs text-gray-500 mt-2">Sobreventa: &lt; -100</p>
                 </div>
 
                 <div className="bg-gray-700/50 rounded-lg p-4">
