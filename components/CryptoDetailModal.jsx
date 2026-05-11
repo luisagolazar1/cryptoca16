@@ -153,28 +153,39 @@ export default function CryptoDetailModal({ crypto, onClose }) {
                   <Section title="📈 Espectro de Inversión — 1 a 15 días">
                     {data.ml?.spectrum ? (
                       <div className="space-y-2">
-                        <p className="text-xs text-gray-500 mb-3">Predicción ensemble (LSTM 40% + Random Forest 60%)</p>
+                        <div className="bg-blue-900/20 border border-blue-800/40 rounded-lg p-3 mb-3 text-xs text-blue-300">
+                          <b>Metodología:</b> Basado en volatilidad histórica real de los últimos 30 días.
+                          Predicciones conservadoras limitadas por el comportamiento histórico del activo.
+                          {data.ml.vol && <span className="ml-2 text-gray-400">Vol. diaria: <b className="text-white">{data.ml.vol}%</b></span>}
+                        </div>
                         {data.ml.spectrum.map(s => (
-                          <div key={s.days} className="flex items-center gap-3 py-2 border-b border-gray-800/50">
-                            <span className="text-gray-400 text-xs w-12 flex-shrink-0">{s.days}d</span>
-                            <div className="flex-1 bg-gray-800 rounded h-2 overflow-hidden">
-                              <div className={`h-2 rounded ${s.change > 0 ? 'bg-green-500' : 'bg-red-500'}`}
-                                style={{width:`${Math.min(Math.abs(s.change)*3, 100)}%`}}></div>
+                          <div key={s.days} className="py-2 border-b border-gray-800/50">
+                            <div className="flex items-center gap-3 mb-1">
+                              <span className="text-gray-400 text-xs w-12 flex-shrink-0">{s.days}d</span>
+                              <div className="flex-1 bg-gray-800 rounded h-1.5 overflow-hidden">
+                                <div className={`h-full rounded ${s.change > 0 ? 'bg-green-500' : 'bg-red-500'}`}
+                                  style={{width:`${Math.min(Math.abs(s.change)*5, 100)}%`}}></div>
+                              </div>
+                              <span className="text-white text-xs font-semibold w-20 text-right">{fmtP(s.price)}</span>
+                              <Badge val={s.change.toFixed(2)} />
+                              <span className={`text-xs font-bold px-2 py-0.5 rounded flex-shrink-0 ${
+                                s.signal==='COMPRAR'?'bg-green-900/50 text-green-400':
+                                s.signal==='VENDER' ?'bg-red-900/50 text-red-400':
+                                'bg-yellow-900/30 text-yellow-500'}`}>
+                                {s.signal}
+                              </span>
                             </div>
-                            <span className="text-white text-xs font-semibold w-24 text-right">{fmtP(s.price)}</span>
-                            <Badge val={s.change.toFixed(2)} />
-                            <span className={`text-xs font-bold px-2 py-0.5 rounded flex-shrink-0 ${
-                              s.signal==='COMPRAR'?'bg-green-900/50 text-green-400':
-                              s.signal==='VENDER' ?'bg-red-900/50 text-red-400':
-                              'bg-yellow-900/30 text-yellow-500'}`}>
-                              {s.signal}
-                            </span>
+                            <div className="flex gap-2 pl-12 text-xs text-gray-600">
+                              <span>Rango: {fmtP(s.rangeLow)} — {fmtP(s.rangeHigh)}</span>
+                              <span className="text-gray-700">|</span>
+                              <span>Conf. {s.confidence}%</span>
+                            </div>
                           </div>
                         ))}
                         <div className="mt-3 flex gap-4 text-xs text-gray-500">
                           <span>🌲 RF Confianza: <b className="text-white">{data.ml.rfStats.confidence}%</b></span>
-                          <span>🟢 Votos bull: <b className="text-green-400">{data.ml.rfStats.bullVotes}</b></span>
-                          <span>🔴 Votos bear: <b className="text-red-400">{data.ml.rfStats.bearVotes}</b></span>
+                          <span>🟢 Bull: <b className="text-green-400">{data.ml.rfStats.bullVotes}</b></span>
+                          <span>🔴 Bear: <b className="text-red-400">{data.ml.rfStats.bearVotes}</b></span>
                         </div>
                       </div>
                     ) : <p className="text-gray-500 text-sm">Datos insuficientes para predicción</p>}
