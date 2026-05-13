@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import CryptoDetailModal from '../components/CryptoDetailModal';
 import { getAllCryptos, updatePrices } from '../lib/cryptoData';
 import { getVolumes, getLiquidityLabel, fmtVol } from '../lib/liquidity';
+import { getFavorites, toggleFavorite, isFavorite } from '../lib/favorites';
 
 export default function Dashboard() {
   const [cryptos, setCryptos]       = useState([]);
@@ -12,6 +13,17 @@ export default function Dashboard() {
   const [lastUpdate, setLastUpdate] = useState(null);
   const [search, setSearch]         = useState('');
   const [sortBy, setSortBy]         = useState('signal'); // signal | volume | change
+  const [favorites, setFavorites]   = useState([]);
+
+  useEffect(() => {
+    setFavorites(getFavorites());
+  }, []);
+
+  const handleToggleFav = (e, symbol) => {
+    e.stopPropagation();
+    const updated = toggleFavorite(symbol);
+    setFavorites([...updated]);
+  };
 
   useEffect(() => {
     try { setCryptos(getAllCryptos()); setLastUpdate(new Date()); } catch(e) {}
@@ -60,7 +72,13 @@ export default function Dashboard() {
   };
 
   let displayed = withData
-    .filter(c => filter==='all' ? true : filter==='buy' ? c.signal==='BUY' : filter==='sell' ? c.signal==='SELL' : c.signal==='HOLD')
+    .filter(c => {
+      if (filter === 'fav')  return favorites.includes(c.symbol);
+      if (filter === 'buy')  return c.signal === 'BUY';
+      if (filter === 'sell') return c.signal === 'SELL';
+      if (filter === 'hold') return c.signal === 'HOLD';
+      return true;
+    })
     .filter(c => !search || c.symbol.toLowerCase().includes(search.toLowerCase()) || c.name.toLowerCase().includes(search.toLowerCase()));
 
   // Ordenamiento
@@ -178,7 +196,10 @@ export default function Dashboard() {
                 {/* MOBILE */}
                 <div className="sm:hidden">
                   <div className="flex items-center gap-3 mb-1">
-                    <span className="text-gray-600 text-xs w-5 flex-shrink-0">{i+1}</span>
+                    <button onClick={(e) => handleToggleFav(e, c.symbol)}
+                      className="text-base flex-shrink-0 w-5 text-center">
+                      {favorites.includes(c.symbol) ? '⭐' : '☆'}
+                    </button>
                     <div className="w-9 h-9 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-xs font-black flex-shrink-0">
                       {c.symbol.charAt(0)}
                     </div>
@@ -217,7 +238,10 @@ export default function Dashboard() {
                 {/* DESKTOP */}
                 <div className="hidden sm:grid items-center gap-2"
                   style={{gridTemplateColumns:'36px 2fr 1fr 1fr 1fr 1fr 80px'}}>
-                  <span className="text-gray-600 text-sm">{i+1}</span>
+                  <button onClick={(e) => handleToggleFav(e, c.symbol)}
+                    className="text-base text-center w-full">
+                    {favorites.includes(c.symbol) ? '⭐' : <span className="text-gray-700 hover:text-yellow-400 transition-colors">☆</span>}
+                  </button>
                   <div className="flex items-center gap-2 min-w-0">
                     <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-xs font-black flex-shrink-0">
                       {c.symbol.charAt(0)}
