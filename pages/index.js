@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import CryptoDetailModal from '../components/CryptoDetailModal';
 import { getAllCryptos, updatePrices } from '../lib/cryptoData';
 import { getVolumes, getLiquidityLabel, fmtVol } from '../lib/liquidity';
 import { getFavorites, toggleFavorite, isFavorite } from '../lib/favorites';
 
 export default function Dashboard() {
+  const router = useRouter();
   const [cryptos, setCryptos]       = useState([]);
   const [volumes, setVolumes]       = useState({});
   const [filter, setFilter]         = useState('all');
@@ -108,6 +110,11 @@ export default function Dashboard() {
             <span className="font-black text-base hidden sm:block" style={{background:'linear-gradient(90deg,#a855f7,#3b82f6)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>
               FXCA16 CRYPTO
             </span>
+            <button onClick={() => router.push('/favorites')}
+              className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-yellow-900/30 border border-yellow-700/40 hover:bg-yellow-900/50 transition-colors flex-shrink-0">
+              <span className="text-sm">⭐</span>
+              {favorites.length > 0 && <span className="text-yellow-400 text-xs font-bold">{favorites.length}</span>}
+            </button>
             <input type="text" placeholder="Buscar..." value={search} onChange={e=>setSearch(e.target.value)}
               className="flex-1 bg-gray-800 text-white text-sm rounded-lg px-3 py-2 border border-gray-700 focus:border-purple-500 outline-none placeholder-gray-500 min-w-0" />
             <button onClick={handleRefresh} disabled={loading}
