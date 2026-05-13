@@ -125,12 +125,32 @@ export default function Dashboard() {
             </button>
           </div>
 
+          {/* FAVORITOS - fila separada visible siempre */}
+          <button onClick={()=>setFilter(filter==='fav'?'all':'fav')}
+            className="w-full flex items-center justify-between px-3 py-2 rounded-xl mb-2 border transition-all"
+            style={{
+              background: filter==='fav' ? 'linear-gradient(135deg,#78350f,#451a03)' : '#111827',
+              borderColor: filter==='fav' ? '#d97706' : '#374151',
+            }}>
+            <div className="flex items-center gap-2">
+              <span className="text-lg">⭐</span>
+              <span className="font-bold text-sm text-white">Mis Favoritos</span>
+              {favorites.length > 0 && (
+                <span className="bg-yellow-600 text-white text-xs px-2 py-0.5 rounded-full font-bold">
+                  {favorites.length}
+                </span>
+              )}
+            </div>
+            <span className="text-gray-500 text-xs">
+              {filter==='fav' ? '✓ activo — toca para cerrar' : favorites.length===0 ? 'Tocá ☆ para agregar' : `Ver ${favorites.length} →`}
+            </span>
+          </button>
+
           {/* FILTROS + ORDENAR */}
           <div className="flex items-center gap-2 pb-2 overflow-x-auto">
             <div className="flex gap-1 flex-shrink-0">
               {[
                 {key:'all',  label:`🌐 Todas (${cryptos.length})`},
-                {key:'fav',  label:`⭐ Favoritos (${favorites.length})`},
                 {key:'buy',  label:`🚀 Comprar (${stats.buy})`},
                 {key:'hold', label:`⏸ Hold (${stats.hold})`},
                 {key:'sell', label:`📉 Vender (${stats.sell})`},
