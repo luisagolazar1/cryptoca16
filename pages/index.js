@@ -130,6 +130,7 @@ export default function Dashboard() {
             <div className="flex gap-1 flex-shrink-0">
               {[
                 {key:'all',  label:`🌐 Todas (${cryptos.length})`},
+                {key:'fav',  label:`⭐ Favoritos (${favorites.length})`},
                 {key:'buy',  label:`🚀 Comprar (${stats.buy})`},
                 {key:'hold', label:`⏸ Hold (${stats.hold})`},
                 {key:'sell', label:`📉 Vender (${stats.sell})`},
