@@ -60,13 +60,12 @@ export default function Dashboard() {
     }
   }
 
-  const handleRefresh = () => {
+const handleRefresh = async () => {
     setLoading(true);
-    setTimeout(() => {
-      try { setCryptos(prev => updatePrices(prev)); setLastUpdate(new Date()); } catch(e) {}
-      setLoading(false);
-      loadVolumes();
-    }, 800);
+    dataService.clearCache();
+    await loadCryptos();
+    await loadVolumes();
+    setLoading(false);
   };
 
   const withData = cryptos.map(c => {
@@ -75,7 +74,7 @@ export default function Dashboard() {
     const liq = getLiquidityLabel(vol);
     return {
       ...c,
-      signal: c.change24h > 3 ? 'BUY' : c.change24h < -3 ? 'SELL' : 'HOLD',
+      signal: c.analysis?.signal || (c.change24h > 3 ? 'BUY' : c.change24h < -3 ? 'SELL' : 'HOLD'),
       volume24h: vol,
       liquidity: liq,
     };
