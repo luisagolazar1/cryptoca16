@@ -29,22 +29,35 @@ export default function Dashboard() {
     setFavorites([...updated]);
   };
 
-  useEffect(() => {
-    try { setCryptos(getAllCryptos()); setLastUpdate(new Date()); } catch(e) {}
+ useEffect(() => {
+    loadCryptos();
     loadVolumes();
   }, []);
+
+  async function loadCryptos() {
+    try {
+      const result = await dataService.fetchCryptos();
+      const enriched = calculateSignalsBatch(result.data || []);
+      setCryptos(enriched);
+      setLastUpdate(new Date());
+    } catch(e) {
+      console.error('Error loading cryptos:', e);
+      try { setCryptos(getAllCryptos()); } catch(e2) {}
+    }
+  }
 
   async function loadVolumes() {
     try {
       const data = await getVolumes([]);
       const map = {};
       data.forEach(d => { map[d.symbol] = d.volume24h; });
-      // también cargar directamente
       const res = await fetch('https://api.binance.com/api/v3/ticker/24hr');
       const all = await res.json();
       all.forEach(t => { map[t.symbol] = parseFloat(t.quoteVolume); });
       setVolumes(map);
-    } catch(e) {}
+    } catch(e) {
+      console.error('Error loading volumes:', e);
+    }
   }
 
   const handleRefresh = () => {
