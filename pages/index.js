@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import CryptoDetailModal from '../components/CryptoDetailModal';
 import { getAllCryptos, updatePrices } from '../lib/cryptoData';
 import { getVolumes, getLiquidityLabel, fmtVol } from '../lib/liquidity';
 import { getFavorites, toggleFavorite, isFavorite } from '../lib/favorites';
+import dataService from '../lib/dataService';
+import { calculateSignalsBatch, generateAlerts } from '../lib/improvedSignal';
 
 export default function Dashboard() {
   const router = useRouter();
