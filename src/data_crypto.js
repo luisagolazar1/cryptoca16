@@ -1,14 +1,8 @@
 module.exports = {
-  "timestamp": "2026-07-14T02:33:15.696Z",
+  "timestamp": "2026-07-14T02:50:40.021Z",
   "cryptos": {
     "BTCUSDT": {
       "symbol": "BTCUSDT",
-      "price": null,
-      "change24h": null,
-      "volume": null
-    },
-    "ETHUSDT": {
-      "symbol": "ETHUSDT",
       "price": null,
       "change24h": null,
       "volume": null
@@ -73,12 +67,6 @@ module.exports = {
       "change24h": null,
       "volume": null
     },
-    "UNIUSDT": {
-      "symbol": "UNIUSDT",
-      "price": null,
-      "change24h": null,
-      "volume": null
-    },
     "ATOMUSDT": {
       "symbol": "ATOMUSDT",
       "price": null,
@@ -129,12 +117,6 @@ module.exports = {
     },
     "SANDUSDT": {
       "symbol": "SANDUSDT",
-      "price": null,
-      "change24h": null,
-      "volume": null
-    },
-    "MANAUSDT": {
-      "symbol": "MANAUSDT",
       "price": null,
       "change24h": null,
       "volume": null
@@ -195,12 +177,6 @@ module.exports = {
     },
     "COTIUSDT": {
       "symbol": "COTIUSDT",
-      "price": null,
-      "change24h": null,
-      "volume": null
-    },
-    "GHSTUSDT": {
-      "symbol": "GHSTUSDT",
       "price": null,
       "change24h": null,
       "volume": null
@@ -363,12 +339,6 @@ module.exports = {
     },
     "OUSUSDT": {
       "symbol": "OUSUSDT",
-      "price": null,
-      "change24h": null,
-      "volume": null
-    },
-    "PYUSUSDT": {
-      "symbol": "PYUSUSDT",
       "price": null,
       "change24h": null,
       "volume": null
