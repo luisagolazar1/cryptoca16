@@ -1,5 +1,5 @@
 module.exports = {
-  "timestamp": "2026-08-22T06:40:14.902Z",
+  "timestamp": "2026-08-22T06:47:06.522Z",
   "cryptos": {
     "BTCUSDT": {
       "symbol": "BTCUSDT",
@@ -223,12 +223,6 @@ module.exports = {
       "change24h": null,
       "volume": null
     },
-    "MTLUSDT": {
-      "symbol": "MTLUSDT",
-      "price": null,
-      "change24h": null,
-      "volume": null
-    },
     "OMGUSDT": {
       "symbol": "OMGUSDT",
       "price": null,
@@ -411,18 +405,6 @@ module.exports = {
     },
     "XMUSDT": {
       "symbol": "XMUSDT",
-      "price": null,
-      "change24h": null,
-      "volume": null
-    },
-    "STONUSDT": {
-      "symbol": "STONUSDT",
-      "price": null,
-      "change24h": null,
-      "volume": null
-    },
-    "SHIBUSDT": {
-      "symbol": "SHIBUSDT",
       "price": null,
       "change24h": null,
       "volume": null
