@@ -1,346 +1,346 @@
 module.exports = {
-  "timestamp": "2026-09-04T10:46:52.310Z",
+  "timestamp": "2026-09-04T10:56:44.370Z",
   "cryptos": {
     "BTCUSDT": {
       "symbol": "BTCUSDT",
-      "price": 81090,
-      "change24h": 4.595,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "ETHUSDT": {
       "symbol": "ETHUSDT",
-      "price": 2528.15,
-      "change24h": 5.691,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "BNBUSDT": {
       "symbol": "BNBUSDT",
-      "price": 721.85,
-      "change24h": 2.773,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "XRPUSDT": {
       "symbol": "XRPUSDT",
-      "price": 1.4478,
-      "change24h": 6.472,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "ADAUSDT": {
       "symbol": "ADAUSDT",
-      "price": 0.2208,
-      "change24h": 7.393,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "SOLUSDT": {
       "symbol": "SOLUSDT",
-      "price": 104.04,
-      "change24h": 4.04,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "DOGEUSDT": {
       "symbol": "DOGEUSDT",
-      "price": 0.08769,
-      "change24h": 6.175,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "DOTUSDT": {
       "symbol": "DOTUSDT",
-      "price": 0.876,
-      "change24h": 0.344,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "DYDXUSDT": {
       "symbol": "DYDXUSDT",
-      "price": 0.11411,
-      "change24h": 2.341,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "AVAXUSDT": {
       "symbol": "AVAXUSDT",
-      "price": 7.503,
-      "change24h": 3.69,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "LINKUSDT": {
       "symbol": "LINKUSDT",
-      "price": 12.056,
-      "change24h": 8.261,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "MATICUSDT": {
       "symbol": "MATICUSDT",
-      "price": 0.3794,
-      "change24h": -0.289,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "UNIUSDT": {
       "symbol": "UNIUSDT",
-      "price": 6.279,
-      "change24h": 4.354,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "ATOMUSDT": {
       "symbol": "ATOMUSDT",
-      "price": 1.528,
-      "change24h": 2.55,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "LTCUSDT": {
       "symbol": "LTCUSDT",
-      "price": 51.25,
-      "change24h": 1.505,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "VETUSDT": {
       "symbol": "VETUSDT",
-      "price": 0.006794,
-      "change24h": 3.205,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "FILUSDT": {
       "symbol": "FILUSDT",
-      "price": 0.7725,
-      "change24h": -2.215,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "AXSUSDT": {
       "symbol": "AXSUSDT",
-      "price": 0.944,
-      "change24h": 2.72,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "CHZUSDT": {
       "symbol": "CHZUSDT",
-      "price": 0.01355,
-      "change24h": 0.818,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "EGLDUSDT": {
       "symbol": "EGLDUSDT",
-      "price": 4.665,
-      "change24h": -6.137,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "THETAUSDT": {
       "symbol": "THETAUSDT",
-      "price": 0.1771,
-      "change24h": 5.354,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "SANDUSDT": {
       "symbol": "SANDUSDT",
-      "price": 0.03937,
-      "change24h": -0.38,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "MANAUSDT": {
       "symbol": "MANAUSDT",
-      "price": 0.0763,
-      "change24h": 3.108,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "ZECUSDT": {
       "symbol": "ZECUSDT",
-      "price": 1001.96,
-      "change24h": 20.819,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "XMRUSDT": {
       "symbol": "XMRUSDT",
-      "price": 118.7,
-      "change24h": 4.766,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "ENJUSDT": {
       "symbol": "ENJUSDT",
-      "price": 0.02672,
-      "change24h": 5.654,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "FLOWUSDT": {
       "symbol": "FLOWUSDT",
-      "price": 0.02761,
-      "change24h": 1.098,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "ICXUSDT": {
       "symbol": "ICXUSDT",
-      "price": 0.00841,
-      "change24h": -14.965,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "KSMUSDT": {
       "symbol": "KSMUSDT",
-      "price": 3.62,
-      "change24h": 2.55,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "SCRTUSDT": {
       "symbol": "SCRTUSDT",
-      "price": 0.0071,
-      "change24h": -23.656,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "ALPHAUSDT": {
       "symbol": "ALPHAUSDT",
-      "price": 0.0097,
-      "change24h": -3,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "AUDIOUSDT": {
       "symbol": "AUDIOUSDT",
-      "price": 0.01324,
-      "change24h": 1.612,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "COTIUSDT": {
       "symbol": "COTIUSDT",
-      "price": 0.01361,
-      "change24h": 2.024,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "GHSTUSDT": {
       "symbol": "GHSTUSDT",
-      "price": 0.108,
-      "change24h": 0,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "IMXUSDT": {
       "symbol": "IMXUSDT",
-      "price": 0.1256,
-      "change24h": -0.159,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "LRCUSDT": {
       "symbol": "LRCUSDT",
-      "price": 0.01879,
-      "change24h": -4.23,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "MASKUSDT": {
       "symbol": "MASKUSDT",
-      "price": 0.443,
-      "change24h": 2.309,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "MTLUSDT": {
       "symbol": "MTLUSDT",
-      "price": 0.236,
-      "change24h": 1.724,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "OMGUSDT": {
       "symbol": "OMGUSDT",
-      "price": 0.383,
-      "change24h": -0.777,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "PERLUSDT": {
       "symbol": "PERLUSDT",
-      "price": 0.0046,
-      "change24h": -20.553,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "RNDRUSDT": {
       "symbol": "RNDRUSDT",
-      "price": 7.03,
-      "change24h": 2.583,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "SKLUSDT": {
       "symbol": "SKLUSDT",
-      "price": 0.00387,
-      "change24h": 5.45,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "SNXUSDT": {
       "symbol": "SNXUSDT",
-      "price": 0.2122,
-      "change24h": 1,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "STMXUSDT": {
       "symbol": "STMXUSDT",
-      "price": 0.004565,
-      "change24h": -1.997,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "STORJUSDT": {
       "symbol": "STORJUSDT",
-      "price": 0.0298,
-      "change24h": -7.165,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "SUSHIUSDT": {
       "symbol": "SUSHIUSDT",
-      "price": 0.1978,
-      "change24h": 2.064,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "SXPUSDT": {
       "symbol": "SXPUSDT",
-      "price": 0.0022,
-      "change24h": -38.889,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "TOMOUSDT": {
       "symbol": "TOMOUSDT",
-      "price": 1.3819,
-      "change24h": 3.219,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "TRBUSDT": {
       "symbol": "TRBUSDT",
-      "price": 17.53,
-      "change24h": 3.605,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "TRUUSDT": {
       "symbol": "TRUUSDT",
-      "price": 0.0023,
-      "change24h": -14.815,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "USDCUSDT": {
       "symbol": "USDCUSDT",
-      "price": 0.99993,
-      "change24h": -0.037,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "DAIUSDT": {
       "symbol": "DAIUSDT",
-      "price": 0,
-      "change24h": 0,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "TUSDUSDT": {
       "symbol": "TUSDUSDT",
-      "price": 0.9995,
-      "change24h": -0.03,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "BUSDUSDT": {
       "symbol": "BUSDUSDT",
-      "price": 1.0003,
-      "change24h": -0.03,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "FDUSDUSDT": {
       "symbol": "FDUSDUSDT",
-      "price": 0.9997,
-      "change24h": 0.08,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "PAXUSDT": {
       "symbol": "PAXUSDT",
-      "price": 0,
-      "change24h": 0,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "USDPUSDT": {
       "symbol": "USDPUSDT",
-      "price": 0.9997,
-      "change24h": -0.06,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "CUSDUSDT": {
@@ -387,8 +387,8 @@ module.exports = {
     },
     "WBETHUSDT": {
       "symbol": "WBETHUSDT",
-      "price": 2794.91,
-      "change24h": 5.767,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "RETHUSDT": {
@@ -423,50 +423,50 @@ module.exports = {
     },
     "SHIBUSDT": {
       "symbol": "SHIBUSDT",
-      "price": 0.00000534,
-      "change24h": 3.089,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "PEPEUSDT": {
       "symbol": "PEPEUSDT",
-      "price": 0.00000366,
-      "change24h": 6.087,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "DOGSUSDT": {
       "symbol": "DOGSUSDT",
-      "price": 0.00004315,
-      "change24h": 4.479,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "FLOKIUSDT": {
       "symbol": "FLOKIUSDT",
-      "price": 0.00002633,
-      "change24h": 7.733,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "BONKUSDT": {
       "symbol": "BONKUSDT",
-      "price": 0.00000316,
-      "change24h": 6.04,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "WIFUSDT": {
       "symbol": "WIFUSDT",
-      "price": 0.2094,
-      "change24h": 4.805,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "SUIUSDT": {
       "symbol": "SUIUSDT",
-      "price": 0.7749,
-      "change24h": 1.907,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "APTUSDT": {
       "symbol": "APTUSDT",
-      "price": 0.597,
-      "change24h": -2.291,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "ARBITRUSDT": {
@@ -477,26 +477,26 @@ module.exports = {
     },
     "OPUSDT": {
       "symbol": "OPUSDT",
-      "price": 0.0996,
-      "change24h": 0.912,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "MAGICUSDT": {
       "symbol": "MAGICUSDT",
-      "price": 0.045,
-      "change24h": 2.041,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "GFTUSDT": {
       "symbol": "GFTUSDT",
-      "price": 0.00196,
-      "change24h": -14.41,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "ONTUSDT": {
       "symbol": "ONTUSDT",
-      "price": 0.05567,
-      "change24h": 3.94,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "RNDR": {
@@ -507,14 +507,14 @@ module.exports = {
     },
     "JUPUSDT": {
       "symbol": "JUPUSDT",
-      "price": 0.2211,
-      "change24h": -0.09,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "PHBUSDT": {
       "symbol": "PHBUSDT",
-      "price": 0.015,
-      "change24h": -54.545,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "AMUSDT": {
@@ -525,14 +525,14 @@ module.exports = {
     },
     "ZKUSDT": {
       "symbol": "ZKUSDT",
-      "price": 0.00961,
-      "change24h": 6.071,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "ORDIUSDT": {
       "symbol": "ORDIUSDT",
-      "price": 4.079,
-      "change24h": 2.539,
+      "price": null,
+      "change24h": null,
       "volume": null
     },
     "VEROUSDT": {
