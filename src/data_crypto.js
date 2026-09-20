@@ -1,5 +1,5 @@
 module.exports = {
-  "timestamp": "2026-09-19T20:19:33.090Z",
+  "timestamp": "2026-09-20T03:48:15.729Z",
   "cryptos": {
     "BTCUSDT": {
       "symbol": "BTCUSDT",
@@ -207,6 +207,12 @@ module.exports = {
     },
     "IMXUSDT": {
       "symbol": "IMXUSDT",
+      "price": null,
+      "change24h": null,
+      "volume": null
+    },
+    "LRCUSDT": {
+      "symbol": "LRCUSDT",
       "price": null,
       "change24h": null,
       "volume": null
