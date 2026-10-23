@@ -1,5 +1,5 @@
 module.exports = {
-  "timestamp": "2026-10-23T16:36:09.828Z",
+  "timestamp": "2026-10-23T16:46:32.827Z",
   "cryptos": {
     "BTCUSDT": {
       "symbol": "BTCUSDT",
